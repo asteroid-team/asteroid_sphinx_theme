@@ -1,6 +1,6 @@
-# PyTorch-Lightning Sphinx Theme
+# Asteroid Sphinx Theme
 
-Sphinx theme for [PyTorch-Lightning Docs](https://pytorch-lightning.readthedocs.io/en/latest/) based on the [Read the Docs Sphinx Theme](https://sphinx-rtd-theme.readthedocs.io/en/latest).
+Sphinx theme for [Asteroid Docs](https://github.com/mpariente/asteroid/tree/master/docs) based on the [PyTorch-Lightning Docs](https://pytorch-lightning.readthedocs.io/en/latest/) and  [Read the Docs Sphinx Theme](https://sphinx-rtd-theme.readthedocs.io/en/latest).
 
 ## Local Development
 
@@ -40,14 +40,13 @@ Run grunt to build the html site and enable live reloading of the demo app at `l
 grunt
 ```
 
-- If you want to specify the project folder (docs or tutorial for which
+- If you want to specify the project folder (docs) for which
 you want to see docs generated) then you need to specify it into `.env.json`
 file:
 
 ```
 {
-    "DOCS_DIR": "docs/",
-    "TUTORIALS_DIR": "path/to/tutorial/directory"
+    "DOCS_DIR": "docs/"
 }
 ```
 
@@ -57,25 +56,19 @@ Run grunt to build the html site for docs:
 grunt --project=docs
 ```
 
-and to build the html site for tutorial:
-
-```
-grunt --project=tutorials
-```
-
 The resulting site is a demo.
 
 ## Testing your changes and submitting a PR
 
-When you are ready to submit a PR with your changes you can first test that your changes have been applied correctly against either the PyTorch Docs or Tutorials repo:
+When you are ready to submit a PR with your changes you can first test that your changes have been applied correctly against either the Asteroid Docs repo:
 
 1. Run the `grunt build` task on your branch and commit the build to Github.
-2. In your local docs or tutorials repo, remove any existing `pt_lightning_sphinx_theme` packages in the `src` folder (there should be a `pip-delete-this-directory.txt` file there)
-3. In `requirements.txt` replace the existing git link with a link pointing to your commit or branch, e.g. `-e git+git://github.com/{ your repo }/lightning_sphinx_theme.git@{ your commit hash }#egg=pt_lightning_sphinx_theme`
+2. In your local docs repo, remove any existing `asteroid_sphinx_theme` packages in the `src` folder (there should be a `pip-delete-this-directory.txt` file there)
+3. In `requirements.txt` replace the existing git link with a link pointing to your commit or branch, e.g. `-e git+git://github.com/{ your repo }/asteroid_theme.git@{ your commit hash }#egg=asteroid_sphinx_theme`
 4. Install the requirements `pip install -r requirements.txt`
-5. Remove the current build. In the docs this is `make clean`, tutorials is `make clean-cache`
-6. Build the static site. In the docs this is `make html`, tutorials is `make html-noplot`
-7. Open the site and look around. In the docs open `docs/build/html/index.html`, in the tutorials open `_build/html.index.html`
+5. Remove the current build. In the docs this is `make clean`
+6. Build the static site. In the docs this is `make html`
+7. Open the site and look around. In the docs open `docs/build/html/index.html`
 
 If your changes have been applied successfully, remove the build commit from your branch and submit your PR.
 
@@ -89,12 +82,11 @@ grunt build
 
 Once that is successful commit the change to Github.
 
-### Developing locally against PyTorch Docs and Tutorials
+### Developing locally against Asteroid Docs
 
-To be able to modify and preview the theme locally against the PyTorch Lightning Docs and/or the PyTorch Lightning Tutorials first clone the repositories:
+To be able to modify and preview the theme locally against the Asteroid Docs first clone the repositories:
 
-- [PyTorch Lightning (Docs)](https://github.com/pytorch/pytorch)
-- [PyTorch Lightning Tutorials](https://github.com/pytorch/tutorials)
+- [Asteroid (Docs)](https://github.com/mpariente/asteroid)
 
 Then follow the instructions in each repository to make the docs.
 
@@ -107,41 +99,28 @@ Once the docs have been successfully generated you should be able to run the fol
 make html
 ```
 
-#### Tutorials
+Once these are successful, navigate to the `conf.py` file in each project. In the Docs these are at `./docs/source`.
+
+In `conf.py` change the html theme to `asteroid_sphinx_theme` and point the html theme path to this repo's local folder, which will end up looking something like:
 
 ```
-# root directory
-make html
+html_theme = 'asteroid_sphinx_theme'
+html_theme_path = ["../../../asteroid_sphinx_theme"]
 ```
 
-Once these are successful, navigate to the `conf.py` file in each project. In the Docs these are at `./docs/source`. The Tutorials one can be found in the root directory.
-
-In `conf.py` change the html theme to `pt_lightning_sphinx_theme` and point the html theme path to this repo's local folder, which will end up looking something like:
-
-```
-html_theme = 'pt_lightning_sphinx_theme'
-html_theme_path = ["../../../lightning_sphinx_theme"]
-```
-
-Next create a file `.env.json` in the root of this repo with some keys/values referencing the local folders of the Docs and Tutorials repos:
+Next create a file `.env.json` in the root of this repo with some keys/values referencing the local folders of the Docs repo:
 
 ```
 {
-  "TUTORIALS_DIR": "../tutorials",
-  "DOCS_DIR": "../pytorch_lightning/docs/source"
+  "DOCS_DIR": "../asteroid/docs/source"
 }
 
 ```
 
-You can then build the Docs or Tutorials by running
+You can then build the Docs by running
 
 ```
 grunt --project=docs
-```
-or
-
-```
-grunt --project=tutorials
 ```
 
 These will generate a live-reloaded local build for the respective projects available at `localhost:1919`.
@@ -150,7 +129,7 @@ Note that while live reloading works these two projects are hefty and will take 
 
 ### Built-in Stylesheets and Fonts
 
-There are a couple of stylesheets and fonts inside the Docs and Tutorials repos themselves meant to override the existing theme. To ensure the most accurate styles we should comment out those files until the maintainers of those repos remove them:
+There are a couple of stylesheets and fonts inside the Docs repo themselves meant to override the existing theme. To ensure the most accurate styles we should comment out those files until the maintainers of those repos remove them:
 
 #### Docs
 
@@ -160,28 +139,19 @@ There are a couple of stylesheets and fonts inside the Docs and Tutorials repos 
 html_context = {
     # 'css_files': [
     #     'https://fonts.googleapis.com/css?family=Lato',
-    #     '_static/css/pytorch_theme.css'
+    #     '_static/css/theme.css'
     # ],
 }
 ```
 
-#### Tutorials
-
-```
-# ./conf.py
-
-# app.add_stylesheet('css/pytorch_theme.css')
-# app.add_stylesheet('https://fonts.googleapis.com/css?family=Lato')
-```
-
 ### Top/Mobile Navigation
 
-The top navigation and mobile menu expect an "active" state for one of the menu items. To ensure that either "Docs" or "Tutorials" is marked as active, set the following config value in the respective `conf.py`, where `{project}` is either `"docs"` or `"tutorials"`.
+The top navigation and mobile menu expect an "active" state for one of the menu items. To ensure that "Docs" is marked as active, set the following config value in the respective `conf.py`, where `{project}` is either `"docs"`.
 
 ```
 html_theme_options = {
   ...
-  'pytorch_project': {project}
+  'asteroid_project': {project}
   ...
 }
 ```
