@@ -1,8 +1,8 @@
 import os
-
 from setuptools import setup
 from io import open
-from asteroid_sphinx_theme import __version__
+
+__version__ = "0.0.1"
 
 
 def package_files(directory:str):
